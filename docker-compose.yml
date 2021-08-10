@@ -1,15 +1,27 @@
-version: '2'
+version: '3.7'
+
+volumes:
+  vhost:
+
+networks:
+  proxy_proxy:
+    external: true
+  vault:
+    driver: overlay
+
 services:
   vault:
     image: vault
-    container_name: vault
-    ports:
-      - "8200:8200"
-    restart: always
+    networks:
+    - proxy_proxy
+    - vault
     volumes:
-      - ./volumes/logs:/vault/logs
-      - ./volumes/file:/vault/file
-      - ./volumes/config:/vault/config
-    cap_add:
-      - IPC_LOCK
-    entrypoint: vault server -config=/vault/config/vault.json
+    - ./volumes/logs:/vault/logs
+    - ./volumes/file:/vault/file
+    - ./volumes/config:/vault/config
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      VIRTUAL_HOST: "52.51.166.228:8200"
+      LETSENCRYPT_HOST: "52.51.166.228:8200"
