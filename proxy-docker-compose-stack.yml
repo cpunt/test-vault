@@ -24,7 +24,6 @@ services:
   nginx:
     image: "jwilder/nginx-proxy"
     ports:
-    - 8200:8200
     - 80:80
     - 443:443
     networks:
@@ -34,7 +33,6 @@ services:
     - vhost:/etc/nginx/vhost.d
     - challange:/usr/share/nginx/html
     - /var/run/docker.sock:/tmp/docker.sock:ro
-    - ${PWD}/files/nginxfilelimit.conf:/etc/nginx/conf.d/nginxfilelimit.conf:ro
     deploy:
       replicas: 1
       restart_policy:

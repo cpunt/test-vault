@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
   vhost:
+  challange:
 
 networks:
   proxy_proxy:
@@ -22,6 +23,11 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.json
     environment:
-      VIRTUAL_HOST: "52.51.166.228:8200"
-      LETSENCRYPT_HOST: "52.51.166.228:8200"
+      VIRTUAL_HOST: "firstvault.janga.la"
+      LETSENCRYPT_HOST: "firstvault.janga.la"
+      VIRTUAL_PORT: "8200"
+      VIRTUAL_PROTO: "https"
