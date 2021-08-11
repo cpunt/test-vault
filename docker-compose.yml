@@ -8,18 +8,18 @@ networks:
   proxy_proxy:
     external: true
   vault:
-    driver: overlay
+    driver: bridge
 
 services:
   vault:
     image: vault
     networks:
-    - proxy_proxy
-    - vault
+      - proxy_proxy
+      - vault
     volumes:
-    - ./volumes/logs:/vault/logs
-    - ./volumes/file:/vault/file
-    - ./volumes/config:/vault/config
+      - ./volumes/logs:/vault/logs
+      - ./volumes/file:/vault/file
+      - ./volumes/config:/vault/config
     deploy:
       restart_policy:
         condition: on-failure
@@ -30,4 +30,3 @@ services:
       VIRTUAL_HOST: "firstvault.janga.la"
       LETSENCRYPT_HOST: "firstvault.janga.la"
       VIRTUAL_PORT: "8200"
-      VIRTUAL_PROTO: "https"

@@ -6,53 +6,53 @@
 # which accompanies this distribution, and is available at
 # http://www.eclipse.org/legal/epl-v10.html
 #
+
 version: '3.7'
 
 volumes:
   vhost:
-  challange:
+  challenge:
   certificates:
 
 networks:
   proxy:
-    driver: overlay
+    driver: bridge
 
 services:
+
   # ---------------------
   # nginx reverse proxy
   # ---------------------
   nginx:
     image: "jwilder/nginx-proxy"
+    restart: on-failure
     ports:
-    - 80:80
-    - 443:443
+      - 80:80
+      - 443:443
     networks:
-    - proxy
+      - proxy
     volumes:
-    - certificates:/etc/nginx/certs:ro
-    - vhost:/etc/nginx/vhost.d
-    - challange:/usr/share/nginx/html
-    - /var/run/docker.sock:/tmp/docker.sock:ro
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
+      - certificates:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - challenge:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     labels:
-    - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
 
   # ---------------------
   # lets encrypt nginx-proxy companion
   # ---------------------
   letsencrypt:
     image: "jrcs/letsencrypt-nginx-proxy-companion"
+    restart: on-failure
     networks:
-    - proxy
+      - proxy
     volumes:
-    - certificates:/etc/nginx/certs:rw
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    - vhost:/etc/nginx/vhost.d
-    - challange:/usr/share/nginx/html
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
+      - certificates:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - vhost:/etc/nginx/vhost.d
+      - challenge:/usr/share/nginx/html
+    depends_on:
+      - nginx
+
+
