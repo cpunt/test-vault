@@ -20,13 +20,10 @@ services:
       - ./volumes/logs:/vault/logs
       - ./volumes/file:/vault/file
       - ./volumes/config:/vault/config
-    deploy:
-      restart_policy:
-        condition: on-failure
     cap_add:
       - IPC_LOCK
     entrypoint: vault server -config=/vault/config/vault.json
     environment:
-      VIRTUAL_HOST: "firstvault.janga.la"
-      LETSENCRYPT_HOST: "firstvault.janga.la"
+      VIRTUAL_HOST: "testvault.janga.la"
+      LETSENCRYPT_HOST: "testvault.janga.la"
       VIRTUAL_PORT: "8200"

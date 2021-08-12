@@ -1,10 +1,9 @@
 ### To start
-First initialize a Docker Swarm:
-  docker swarm init
-Then initialize stack:
-  docker stack deploy -c proxy-docker-compose-stack.yml proxy
-  docker stack deploy -c docker-compose.yml dc
+docker-compose -p proxy -f proxy-docker-compose-stack.yml up
+
+docker-compose -p vault -f docker-compose.yml up
 
 ### To stop
-docker stack rm dc
-docker stack rm proxy
+docker-compose -p vault down
+
+docker-compose -p proxy down
